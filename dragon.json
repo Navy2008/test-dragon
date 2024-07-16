@@ -1,0 +1,129 @@
+{
+  "summary": {
+    "title": "Docker-based Application Threat Model",
+    "owner": "Your Name",
+    "description": "This is a threat model for a Docker-based web application with components including a web app, Nginx, SQLite, and log files."
+  },
+  "detail": {
+    "diagrams": [
+      {
+        "title": "Docker-based Application Diagram",
+        "elements": [
+          {
+            "id": "1",
+            "name": "User",
+            "type": "Actor",
+            "attributes": []
+          },
+          {
+            "id": "2",
+            "name": "Web App",
+            "type": "Process",
+            "attributes": []
+          },
+          {
+            "id": "3",
+            "name": "Nginx",
+            "type": "Process",
+            "attributes": []
+          },
+          {
+            "id": "4",
+            "name": "SQLite",
+            "type": "DataStore",
+            "attributes": []
+          },
+          {
+            "id": "5",
+            "name": "Logs",
+            "type": "DataStore",
+            "attributes": []
+          }
+        ],
+        "links": [
+          {
+            "id": "6",
+            "from": "1",
+            "to": "3",
+            "name": "HTTP Request",
+            "attributes": []
+          },
+          {
+            "id": "7",
+            "from": "3",
+            "to": "2",
+            "name": "Forward Request",
+            "attributes": []
+          },
+          {
+            "id": "8",
+            "from": "2",
+            "to": "4",
+            "name": "Database Query",
+            "attributes": []
+          },
+          {
+            "id": "9",
+            "from": "2",
+            "to": "5",
+            "name": "Log Write",
+            "attributes": []
+          },
+          {
+            "id": "10",
+            "from": "3",
+            "to": "1",
+            "name": "HTTP Response",
+            "attributes": []
+          }
+        ],
+        "threats": [
+          {
+            "id": "T1",
+            "title": "SQL Injection",
+            "type": "Spoofing",
+            "description": "An attacker might exploit vulnerabilities in the web application to execute arbitrary SQL queries.",
+            "mitigations": [
+              "Use prepared statements",
+              "Validate and sanitize user inputs"
+            ],
+            "elementId": "2"
+          },
+          {
+            "id": "T2",
+            "title": "DDoS Attack",
+            "type": "Denial of Service",
+            "description": "An attacker might overwhelm the Nginx server with a large volume of requests.",
+            "mitigations": [
+              "Rate limiting",
+              "Implement WAF (Web Application Firewall)"
+            ],
+            "elementId": "3"
+          },
+          {
+            "id": "T3",
+            "title": "Data Breach",
+            "type": "Information Disclosure",
+            "description": "Sensitive data in SQLite might be exposed if the container is compromised.",
+            "mitigations": [
+              "Encrypt sensitive data",
+              "Restrict access to the database"
+            ],
+            "elementId": "4"
+          },
+          {
+            "id": "T4",
+            "title": "Log Forging",
+            "type": "Repudiation",
+            "description": "An attacker might manipulate log files to hide their activities.",
+            "mitigations": [
+              "Use secure logging mechanisms",
+              "Monitor and analyze logs regularly"
+            ],
+            "elementId": "5"
+          }
+        ]
+      }
+    ]
+  }
+}
